@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkerRepository extends JpaRepository<WorkerDB, Long> {
 
+    Iterable<WorkerDB> findByName (String name);
 }
