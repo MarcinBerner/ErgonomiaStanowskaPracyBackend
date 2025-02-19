@@ -19,7 +19,7 @@ public abstract class TranslatorWorkerDTOtoWorkerDB {
             @Mapping(source = "surname", target = "surname"),
             @Mapping(source = "questions", target = "questions")
     })
-    protected abstract WorkerDB toWorkerDB(WorkerDTO workerDTO);
+    public abstract WorkerDB toWorkerDB(WorkerDTO workerDTO);
 
 
 

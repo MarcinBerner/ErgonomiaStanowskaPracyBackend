@@ -19,5 +19,5 @@ public abstract class TransaltorQuestionDTOtoQuestionDB {
             @Mapping(source = "score", target = "score"),
             @Mapping(source = "answers", target = "answers")
     })
-    protected abstract QuestionDB toQuestionDB(QuestionDTO questionDTO);
+    public abstract QuestionDB toQuestionDB(QuestionDTO questionDTO);
 }

@@ -20,5 +20,5 @@ public abstract class TranslatorAnswerDTOtoAnswerDB {
             @Mapping(source = "answerText", target = "answerText"),
             @Mapping(source = "score", target = "score")
     })
-    protected abstract AnswerDB toAnswerDB(AnswerDTO answerDTO);
+    public abstract AnswerDB toAnswerDB(AnswerDTO answerDTO);
 }

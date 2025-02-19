@@ -1,10 +1,14 @@
 package com.example.ErgonomiaStanowiskaPracy.mediator;
 
-import com.example.ErgonomiaStanowiskaPracy.model.WorkerDB;
-import com.example.ErgonomiaStanowiskaPracy.model.WorkerDTO;
+import com.example.ErgonomiaStanowiskaPracy.model.*;
+import com.example.ErgonomiaStanowiskaPracy.services.AnswerService;
+import com.example.ErgonomiaStanowiskaPracy.services.QuestionService;
 import com.example.ErgonomiaStanowiskaPracy.services.WorkerService;
 import com.example.ErgonomiaStanowiskaPracy.translator.*;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class Mediator {
@@ -16,7 +20,9 @@ public class Mediator {
              TranslatorWorkerDTOtoWorkerDB translatorWorkerDTOtoWorkerDB,
              TranslatorAnswerDTOtoAnswerDB translatorAnswerDTOtoAnswerDB,
              TransaltorQuestionDTOtoQuestionDB transaltorQuestionDTOtoQuestionDB,
-             WorkerService workerService){
+             WorkerService workerService,
+             AnswerService answerService,
+             QuestionService questionService){
        this.translatorAnswerDBtoAnswerDTO = translatorAnswerDBtoAnswerDTO;
        this.translatorQuestionDBtoQuestionDTO = translatorQuestionDBtoQuestionDTO;
        this.translatorWorkerDBtoWorkerDTO = translatorWorkerDBtoWorkerDTO;
@@ -24,8 +30,9 @@ public class Mediator {
        this.transaltorQuestionDTOtoQuestionDB = transaltorQuestionDTOtoQuestionDB;
        this.translatorAnswerDTOtoAnswerDB = translatorAnswerDTOtoAnswerDB;
 
-
        this.workerService = workerService;
+       this.questionService = questionService;
+       this.answerService = answerService;
 
     }
     TranslatorQuestionDBtoQuestionDTO translatorQuestionDBtoQuestionDTO;
@@ -35,10 +42,20 @@ public class Mediator {
     TransaltorQuestionDTOtoQuestionDB transaltorQuestionDTOtoQuestionDB;
     TranslatorAnswerDTOtoAnswerDB translatorAnswerDTOtoAnswerDB;
     WorkerService workerService;
+    QuestionService questionService;
+    AnswerService answerService;
 
-    public void saveFamily(WorkerDTO workerDTO){
-        WorkerDB workerDB = new WorkerDB();
-        workerService.save(workerDB);
+    public void saveQuestionnaire(WorkerDTO workerDTO, List<QuestionDTO> questions, List<AnswerDTO> answers){
+       WorkerDB worker = translatorWorkerDTOtoWorkerDB.toWorkerDB(workerDTO);
+       List<QuestionDB> questionsDB = questions.stream()
+               .map(transaltorQuestionDTOtoQuestionDB::toQuestionDB)
+               .collect(Collectors.toList());
+       List<AnswerDB> answersDB = answers.stream()
+               .map(translatorAnswerDTOtoAnswerDB::toAnswerDB)
+               .collect(Collectors.toList());
+       workerService.save(worker);
+       questionService.saveAll(questionsDB);
+       answerService.saveAll(answersDB);
     }
 
 }

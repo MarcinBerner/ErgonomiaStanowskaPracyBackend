@@ -11,7 +11,7 @@ public class WorkerService {
 
     public WorkerService(WorkerRepository workerRepository){
         this.workerRepository = workerRepository;
-    };
+    }
     WorkerRepository workerRepository;
 
     public void save (WorkerDB workerDB) {workerRepository.save(workerDB);}
